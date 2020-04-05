@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "449314718913",
+    "firebase_url": "https://mapd721project.firebaseio.com",
+    "project_id": "mapd721project",
+    "storage_bucket": "mapd721project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449314718913:android:5605d9478610141f314040",
+        "android_client_info": {
+          "package_name": "com.ds.mapd721project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449314718913-5dt3rgfs077f6jgu14ujl2lpkctkcp59.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS9uGrX0-zBdNq_NbhBcXc5m3YCqeBLpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449314718913-5dt3rgfs077f6jgu14ujl2lpkctkcp59.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
