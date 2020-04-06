@@ -2,10 +2,17 @@ package com.ds.mapd721project;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,11 +24,12 @@ import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class HomeScreen extends AppCompatActivity implements BillingProcessor.IBillingHandler {
 
-    Button logout, buy, bluetooth_enable, bluetooth_disable;
+    Button logout, buy, bluetooth_enable, bluetooth_disable, scanDevices, showDevices;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
     BillingProcessor billingProcessor;
@@ -29,11 +37,17 @@ public class HomeScreen extends AppCompatActivity implements BillingProcessor.IB
     Intent enable_bluetooth;
     int requestCodebt;
     ListView listView;
+    ArrayList<String> arrayList = new ArrayList<String>();
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        /*if (ContextCompat.checkSelfPermission(HomeScreen.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(HomeScreen.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        }*/
 
         //mAuth = FirebaseAuth.getInstance();
         billingProcessor = new BillingProcessor(this, null, this);
@@ -43,9 +57,17 @@ public class HomeScreen extends AppCompatActivity implements BillingProcessor.IB
         bluetooth_disable = findViewById(R.id.bluetooth_disable);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         listView = findViewById(R.id.deviceList);
+        scanDevices = findViewById(R.id.scanDevices);
+        showDevices = findViewById(R.id.showDevices);
 
         enable_bluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         requestCodebt = 24;
+
+        IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(receiver, intentFilter);
+
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList);
+        listView.setAdapter(arrayAdapter);
     }
 
     public void logout(View view) {
@@ -131,4 +153,25 @@ public class HomeScreen extends AppCompatActivity implements BillingProcessor.IB
             listView.setAdapter(arrayAdapter);
         }
     }
+
+    public void scanDevices(View view) {
+        //int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        bluetoothAdapter.startDiscovery();
+        //Toast.makeText(this, "function", Toast.LENGTH_SHORT).show();
+    }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Toast.makeText(context, "Device", Toast.LENGTH_SHORT).show();
+            String action = intent.getAction();
+            if(BluetoothDevice.ACTION_FOUND.equals(action))
+            {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                arrayList.add(device.getName());
+                //Toast.makeText(context, "Device" + device.getName(), Toast.LENGTH_SHORT).show();
+                arrayAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 }
