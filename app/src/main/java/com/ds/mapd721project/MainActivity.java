@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Get instance of FirebaseAuth Class
         mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
@@ -34,10 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Function to register a new user
     public void register(View view) {
         String emailID = email.getText().toString();
         String pass = password.getText().toString();
 
+        //Prompt the user to fill out all fields
         if(emailID.isEmpty())
         {
             email.setError("Please Enter Email");
@@ -54,9 +57,11 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(!(emailID.isEmpty() && pass.isEmpty()))
         {
+            //Create new user with entered Email and Password, add a listener for completion
             mAuth.createUserWithEmailAndPassword(emailID, pass).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    //if task result came out false, notify user, else login
                     if(!task.isSuccessful())
                     {
                         Toast.makeText(MainActivity.this, "SignUp unsuccessfull. Please try again", Toast.LENGTH_SHORT).show();
