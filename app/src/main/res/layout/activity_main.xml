@@ -32,21 +32,23 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login"
+        android:id="@+id/register"
         android:text="Register"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:onClick="register"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/signup"
+        android:id="@+id/login"
         android:text="Have an Account? Login here"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:onClick="login"/>
 
 </LinearLayout>
